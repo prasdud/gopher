@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/). Versioning follows [Semantic Versioning](https://semver.org/).
 
+## [0.5.0] - 2026-02-09
+
+### Changed
+
+- Rewrote `daemon/main.go` from one-shot print to concurrent daemon loop
+- Each collector runs in its own goroutine with independent tick intervals (CPU 1s, RAM 2s, uptime 5s)
+- Fan-in aggregator reads from a shared channel and prints results as they arrive
+
+### Fixed
+
+- Error handling no longer shadows `err` — each collector handles errors independently
+
 ## [0.4.0] - 2026-02-09
 
 ### Added
