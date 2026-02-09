@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/). Versioning follows [Semantic Versioning](https://semver.org/).
 
+## [0.4.0] - 2026-02-09
+
+### Added
+
+- `Collector` and `Metric` interfaces in `internal/collector/collector.go`
+- `UptimeCollector`, `RamCollector`, `CpuCollector` wrappers in `internal/collector/`
+- `MetricName()` method on `Uptime`, `RamDetails`, `CpuUsage`, and `CpuPercent` structs
+- `CpuPercent` wrapper struct for CPU percentage (needed to satisfy `Metric` interface)
+
 ## [0.3.0] - 2026-01-27
 
 ### Added
