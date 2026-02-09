@@ -1,0 +1,22 @@
+{
+  "name": "default",
+  "header": "#FF6F61",
+  "footer": "#888888",
+  "border": "#444444",
+  "uptime": {
+    "label": "#61AFEF",
+    "value": "#ABB2BF"
+  },
+  "cpu": {
+    "label": "#E06C75",
+    "value": "#ABB2BF",
+    "bar_filled": "#E06C75",
+    "bar_empty": "#3E4451"
+  },
+  "ram": {
+    "label": "#98C379",
+    "value": "#ABB2BF",
+    "bar_filled": "#98C379",
+    "bar_empty": "#3E4451"
+  }
+}

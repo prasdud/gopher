@@ -8,13 +8,6 @@ import (
 	"github.com/prasdud/gopher/internal/collector"
 )
 
-// CollectorResult is what each goroutine sends into the shared channel.
-type CollectorResult struct {
-	Name   string
-	Metric collector.Metric
-	Err    error
-}
-
 func main() {
 	// 1. Register all collectors
 	collectors := []collector.Collector{
@@ -24,7 +17,7 @@ func main() {
 	}
 
 	// 2. One shared channel for all results
-	results := make(chan CollectorResult)
+	results := make(chan collector.CollectorResult)
 
 	// 3. One goroutine per collector, each with its own ticker
 	for _, c := range collectors {
@@ -32,7 +25,7 @@ func main() {
 			ticker := time.NewTicker(c.Interval())
 			for range ticker.C {
 				metric, err := c.Collect()
-				results <- CollectorResult{
+				results <- collector.CollectorResult{
 					Name:   c.Name(),
 					Metric: metric,
 					Err:    err,

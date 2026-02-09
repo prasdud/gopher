@@ -13,3 +13,10 @@ type Collector interface {
 	Interval() time.Duration
 	Collect() (Metric, error)
 }
+
+// CollectorResult is what each collector goroutine sends into the shared channel.
+type CollectorResult struct {
+	Name   string
+	Metric Metric
+	Err    error
+}
