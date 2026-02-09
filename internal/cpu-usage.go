@@ -19,6 +19,18 @@ type CpuUsage struct {
 	Total uint64
 }
 
+func (c *CpuUsage) MetricName() string {
+	return "cpu"
+}
+
+type CpuPercent struct {
+	Percent float64
+}
+
+func (c *CpuPercent) MetricName() string {
+	return "cpu"
+}
+
 func GetCpuUsage() (*CpuUsage, error) {
 	f, err := os.Open("/proc/stat")
 	if err != nil {

@@ -8,6 +8,10 @@ type Uptime struct {
 	Seconds int64
 }
 
+func (u *Uptime) MetricName() string {
+	return "uptime"
+}
+
 func GetUptime() (*Uptime, error) {
 	var info unix.Sysinfo_t
 	if err := unix.Sysinfo(&info); err != nil {

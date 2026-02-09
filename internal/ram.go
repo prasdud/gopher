@@ -14,6 +14,10 @@ type RamDetails struct {
 	UsedRam      int64
 }
 
+func (r *RamDetails) MetricName() string {
+	return "ram"
+}
+
 func GetRamDetails() (*RamDetails, error) {
 	file, err := os.Open("/proc/meminfo")
 	if err != nil {
