@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/). Versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.0.0] - 2026-02-10
+
+### Added
+
+- Live TUI dashboard using bubbletea + lipgloss (`angel/main.go`, `tui/`)
+- Compact mode: inline CPU/RAM progress bars with uptime
+- Expanded mode: bordered boxes with detailed RAM stats (toggle with Ctrl+O)
+- Responsive layout: side-by-side at >80 cols, stacked when narrow, "Terminal too small" at <40x10
+- JSON-based theming system (`tui/theme.go`, `styles/default.json`)
+- Reusable TUI components: progress bar, bordered box, ASCII header (`tui/components.go`)
+- Clean goroutine shutdown via quit channel in angel
+
+### Changed
+
+- Moved `CollectorResult` from `daemon/main.go` to `internal/collector/collector.go` so both daemon and angel can share it
+
 ## [0.5.0] - 2026-02-09
 
 ### Changed
