@@ -91,8 +91,8 @@ func FormatUptime(hours, minutes, seconds int64) string {
 }
 
 // FormatRAM returns "used/total GB".
-func FormatRAM(used, total int64) string {
-	return fmt.Sprintf("%d/%d GB", used, total)
+func FormatRAM(used, total float64) string {
+	return fmt.Sprintf("%.2f/%.2f GB", used, total)
 }
 
 // FormatCPU returns "XX.X%".

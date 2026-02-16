@@ -8,10 +8,10 @@ import (
 )
 
 type RamDetails struct {
-	TotalRam     int64
-	FreeRam      int64
-	AvailableRam int64
-	UsedRam      int64
+	TotalRam     float64
+	FreeRam      float64
+	AvailableRam float64
+	UsedRam      float64
 }
 
 func (r *RamDetails) MetricName() string {
@@ -56,9 +56,9 @@ func GetRamDetails() (*RamDetails, error) {
 	usedKB := totalKB - freeKB - buffersKB - cachedKB - sReclaimableKB
 
 	return &RamDetails{
-		TotalRam:     totalKB / 1024 / 1024,     // GB
-		FreeRam:      freeKB / 1024 / 1024,      // GB
-		AvailableRam: availableKB / 1024 / 1024, // GB
-		UsedRam:      usedKB / 1024 / 1024,      // GB
+		TotalRam:     float64(totalKB) / 1024 / 1024,     // GB
+		FreeRam:      float64(freeKB) / 1024 / 1024,      // GB
+		AvailableRam: float64(availableKB) / 1024 / 1024, // GB
+		UsedRam:      float64(usedKB) / 1024 / 1024,      // GB
 	}, nil
 }
