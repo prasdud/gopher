@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/). Versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] - 2026-02-16
+
+### Added
+
+- Swap memory metrics: `TotalSwap`, `UsedSwap`, `AvailableSwap` in `RamDetails` (parsed from `SwapTotal`/`SwapFree` in `/proc/meminfo`)
+- Swap usage display in TUI — compact mode shows `SWP` bar, expanded mode adds swap row inside the Memory box
+- Test suite in `tests/` directory — `ram_test.go` with tests for RAM values, bounds validation, swap, and `MetricName()`
+
+### Changed
+
+- RAM fields changed from `int64` to `float64` across the codebase (`internal/ram.go`, `tui/tui.go`, `tui/components.go`) for sub-GB precision
+- `FormatRAM()` now takes `float64` args and formats with 2 decimal places
+- Uptime label in compact view now reads `UPTIME ⏱` instead of just `⏱`
+
+### Fixed
+
+- Better vertical spacing between metric groups in compact TUI view
+- Expanded view format strings updated from `%d` to `%.2f` to match the `float64` migration
+
 ## [1.0.0] - 2026-02-10
 
 ### Added
