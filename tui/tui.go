@@ -18,6 +18,7 @@ type Model struct {
 	uptime   *internal.Uptime
 	ram      *internal.RamDetails
 	cpu      *internal.CpuPercent
+	ipv4     *internal.IPv4
 	width    int
 	height   int
 	expanded bool
@@ -75,6 +76,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.ram = metric
 			case *internal.CpuPercent:
 				m.cpu = metric
+			case *internal.IPv4:
+				m.ipv4 = metric
 			}
 			m.err = nil
 		}
@@ -98,8 +101,19 @@ func (m Model) View() string {
 
 	var b strings.Builder
 
-	// Header
-	b.WriteString(RenderHeader(m.theme))
+	// Header + IP
+	header := RenderHeader(m.theme)
+	ipLabel := ""
+	if m.ipv4 != nil {
+		ipStyle := lipgloss.NewStyle().
+			Bold(true).
+			Foreground(m.theme.CPUValue.GetForeground()).
+			Border(lipgloss.RoundedBorder()).
+			Padding(0, 1).
+			MarginLeft(2)
+		ipLabel = ipStyle.Render("NET: " + m.ipv4.Address)
+	}
+	b.WriteString(lipgloss.JoinHorizontal(lipgloss.Center, header, ipLabel))
 	b.WriteString("\n\n")
 
 	if m.expanded {
@@ -246,11 +260,12 @@ func (m Model) viewExpanded() string {
 	uptimeBox := BorderedBox("Uptime", uptimeContent, boxWidth, m.theme.Border)
 
 	if wide {
-		// Side by side: CPU | RAM, then Uptime below
+		// Side by side: CPU | RAM
 		cpuRendered := cpuBox
 		ramRendered := ramBox
 		b.WriteString(lipgloss.JoinHorizontal(lipgloss.Top, " "+cpuRendered, "  "+ramRendered))
 		b.WriteString("\n")
+		// Status below
 		b.WriteString(" " + uptimeBox)
 	} else {
 		// Stacked

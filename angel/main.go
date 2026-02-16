@@ -28,10 +28,20 @@ func main() {
 		&collector.UptimeCollector{},
 		&collector.RamCollector{},
 		&collector.CpuCollector{},
+		&collector.IPv4Collector{},
 	}
 
 	for _, c := range collectors {
 		go func(c collector.Collector) {
+			// run once at start to grab fresh metrics
+			metric, err := c.Collect()
+			results <- collector.CollectorResult{
+				Name:   c.Name(),
+				Metric: metric,
+				Err:    err,
+			}
+
+			// start the periodic ticker later
 			ticker := time.NewTicker(c.Interval())
 			defer ticker.Stop()
 			for {
