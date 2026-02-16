@@ -141,6 +141,7 @@ func (m Model) viewCompact() string {
 		cpuBar = ProgressBar(0, barWidth, m.theme.CPUBarFill, m.theme.CPUBarEmpty)
 	}
 	b.WriteString(cpuLabel + m.theme.CPUValue.Render(cpuValue) + cpuBar + "\n")
+	b.WriteString("\n")
 
 	// RAM
 	ramLabel := m.theme.RAMLabel.Render(" RAM")
@@ -178,14 +179,16 @@ func (m Model) viewCompact() string {
 		swapBar = ProgressBar(0, barWidth, m.theme.RAMBarFill, m.theme.RAMBarEmpty)
 	}
 	b.WriteString(swapLabel + m.theme.RAMValue.Render(swapValue) + swapBar + "\n")
+	b.WriteString("\n")
 
 	// Uptime
-	uptimeLabel := m.theme.UptimeLabel.Render(" ⏱ ")
+	uptimeLabel := m.theme.UptimeLabel.Render(" UPTIME ⏱ ")
 	uptimeValue := " --h --m --s"
 	if m.uptime != nil {
 		uptimeValue = " " + FormatUptime(m.uptime.Hours, m.uptime.Minutes, m.uptime.Seconds)
 	}
 	b.WriteString(uptimeLabel + m.theme.UptimeValue.Render(uptimeValue))
+	b.WriteString("\n")
 
 	return b.String()
 }
