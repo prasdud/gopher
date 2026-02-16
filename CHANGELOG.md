@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/). Versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.2.0] - 2026-02-16
+
+### Added
+
+- IPv4 metric collection: Fetches public IP from `api.ipify.org` (`internal/ip-v4.go`)
+- IPv4 integration in TUI: Displayed in a prominent bold, bordered box next to the GOPHER header
+- Immediate collection: Modified `angel/main.go` to run all collectors once immediately on startup instead of waiting for the first ticker interval
+- Test suite: Added `tests/ip-v4_test.go` for public IP verification
+
+### Changed
+
+- TUI Layout: Removed redundant IP address line from the main metrics list to keep the interface cleaner
+
 ## [1.1.0] - 2026-02-16
 
 ### Added
