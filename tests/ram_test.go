@@ -48,3 +48,33 @@ func TestRamDetailsMetricName(t *testing.T) {
 		t.Errorf("MetricName() = %q, want %q", got, "ram")
 	}
 }
+
+func TestGetRamDetailsSwap(t *testing.T) {
+	ram, err := internal.GetRamDetails()
+	if err != nil {
+		t.Fatalf("GetRamDetails() returned error: %v", err)
+	}
+
+	if ram == nil {
+		t.Fatal("GetRamDetails() returned nil")
+	}
+
+	// TotalSwap should be positive on any real system
+	if ram.TotalSwap <= 0 {
+		t.Errorf("expected TotalSwap > 0, got %f", ram.TotalSwap)
+	}
+
+	// Used Swap shouldn't exceed total
+	if ram.UsedSwap > ram.TotalSwap {
+		t.Errorf("UsedSwap (%f) exceeds TotalSwap (%f)", ram.UsedSwap, ram.TotalSwap)
+	}
+
+	// Free Swap shouldn't exceed total
+	if ram.AvailableSwap > ram.TotalSwap {
+		t.Errorf("AvailableSwap (%f) exceeds TotalSwap (%f)", ram.AvailableSwap, ram.TotalSwap)
+	}
+
+	// Print for visual check
+	fmt.Printf("Total Swap: %f GB, Used Swap: %f GB, Available Swap: %f GB\n",
+		ram.TotalSwap, ram.UsedSwap, ram.AvailableSwap)
+}
