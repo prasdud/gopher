@@ -162,6 +162,23 @@ func (m Model) viewCompact() string {
 	}
 	b.WriteString(ramLabel + m.theme.RAMValue.Render(ramValue) + ramBar + "\n")
 
+	// Swap
+	swapLabel := m.theme.RAMLabel.Render(" SWP")
+	swapValue := "  --/-- GB "
+	var swapBar string
+	var swapPercent float64
+	if m.ram != nil && m.ram.TotalSwap > 0 {
+		swapValue = fmt.Sprintf(" %s ", FormatRAM(m.ram.UsedSwap, m.ram.TotalSwap))
+		for len(swapValue) < 8 {
+			swapValue = " " + swapValue
+		}
+		swapPercent = m.ram.UsedSwap / m.ram.TotalSwap * 100
+		swapBar = ProgressBar(swapPercent, barWidth, m.theme.RAMBarFill, m.theme.RAMBarEmpty)
+	} else {
+		swapBar = ProgressBar(0, barWidth, m.theme.RAMBarFill, m.theme.RAMBarEmpty)
+	}
+	b.WriteString(swapLabel + m.theme.RAMValue.Render(swapValue) + swapBar + "\n")
+
 	// Uptime
 	uptimeLabel := m.theme.UptimeLabel.Render(" ⏱ ")
 	uptimeValue := " --h --m --s"
@@ -201,12 +218,20 @@ func (m Model) viewExpanded() string {
 	if m.ram != nil {
 		var ramPercent float64
 		if m.ram.TotalRam > 0 {
-			ramPercent = float64(m.ram.UsedRam) / float64(m.ram.TotalRam) * 100
+			ramPercent = m.ram.UsedRam / m.ram.TotalRam * 100
 		}
 		bar := ProgressBar(ramPercent, barWidth, m.theme.RAMBarFill, m.theme.RAMBarEmpty)
-		ramContent = fmt.Sprintf("Used:  %s  %s\nFree:  %d GB\nAvailable: %d GB",
+		ramContent = fmt.Sprintf("Used:  %s  %s\nFree:  %.2f GB\nAvailable: %.2f GB",
 			FormatRAM(m.ram.UsedRam, m.ram.TotalRam), bar,
 			m.ram.FreeRam, m.ram.AvailableRam)
+		// Swap info
+		if m.ram.TotalSwap > 0 {
+			var swapPercent float64
+			swapPercent = m.ram.UsedSwap / m.ram.TotalSwap * 100
+			swapBar := ProgressBar(swapPercent, barWidth, m.theme.RAMBarFill, m.theme.RAMBarEmpty)
+			ramContent += fmt.Sprintf("\nSwap:  %s  %s",
+				FormatRAM(m.ram.UsedSwap, m.ram.TotalSwap), swapBar)
+		}
 	}
 	ramBox := BorderedBox("Memory", ramContent, boxWidth, m.theme.Border)
 
